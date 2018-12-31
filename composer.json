@@ -1,0 +1,15 @@
+{
+    "name": "meritoo/menu-bundle",
+    "description": "Build navigation easily, without any efforts. Bundle based on Symfony framework.",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Meritoo.pl",
+            "email": "github@meritoo.pl"
+        }
+    ],
+    "require": {
+        "meritoo/common-bundle": "^0.1.22"
+    }
+}
