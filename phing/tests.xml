@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Meritoo Bundle" basedir="." default="build:main" phingVersion="2.16.0">
+    <autoloader/>
+
+    <!-- Properties -->
+    <if>
+        <available file="${project.basedir}/phing/properties" property="custom.properties.available"/>
+        <then>
+            <property file="${project.basedir}/phing/properties"/>
+        </then>
+        <else>
+            <property file="${project.basedir}/phing/properties.dist"/>
+        </else>
+    </if>
+
+    <!-- Filesets -->
+    <fileset id="sourcecode" dir="${dir.src}">
+        <include name="**/*.php"/>
+        <exclude name="*Test.php"/>
+        <exclude name="**/*Test.php"/>
+        <exclude name="**/Resources/**"/>
+        <exclude name="**/DataFixtures/**"/>
+        <exclude name="**/Tests/**"/>
+    </fileset>
+    <fileset id="tests" dir="${dir.tests}">
+        <include name="**/*Test*.php"/>
+    </fileset>
+
+    <!-- Default / main target -->
+    <target name="build:main"
+            depends="build:fix-coding-standards,
+                    build:check,
+                    build:test,
+                    app:checkout"
+    />
+
+    <!-- Fixing coding standards using the PHP Coding Standards Fixer (http://cs.sensiolabs.org) -->
+    <target name="build:fix-coding-standards">
+        <exec command="${tests.cs_fixer.command}" passthru="true"/>
+    </target>
+
+    <!-- Check target -->
+    <target name="build:check"
+            depends="check:cs,
+                    check:md,
+                    check:cpd,
+                    check:depend,
+                    check:loc"
+    />
+
+    <!-- Test target -->
+    <target name="build:test"
+            depends="test:phpunit,
+                    test:infection"
+    />
+
+    <!-- Symfony2 code sniffer -->
+    <target name="check:cs" depends="build:prepare">
+        <phpcodesniffer standard="PSR2" showWarnings="true">
+            <fileset refid="sourcecode"/>
+            <formatter type="checkstyle" outfile="${dir.reports}/checkstyle.xml"/>
+            <formatter type="csv" outfile="${dir.reports}/checkstyle.csv"/>
+            <formatter type="summary" outfile="${dir.reports}/checkstyle_summary.txt"/>
+        </phpcodesniffer>
+    </target>
+
+    <!-- copy/paste detector -->
+    <target name="check:cpd" depends="build:prepare">
+        <phpcpd>
+            <fileset refid="sourcecode"/>
+            <formatter type="pmd" outfile="${dir.reports}/pmd-cpd.xml"/>
+        </phpcpd>
+    </target>
+
+    <!-- Mess detector -->
+    <target name="check:md" depends="build:prepare">
+        <phpmd rulesets="codesize,controversial,design,naming,unusedcode">
+            <fileset refid="sourcecode"/>
+            <formatter type="html" outfile="${dir.reports}/phpmd.html"/>
+            <formatter type="text" outfile="${dir.reports}/phpmd.txt"/>
+        </phpmd>
+    </target>
+
+    <!-- Code dependency -->
+    <target name="check:depend" depends="build:prepare">
+        <phpdepend>
+            <fileset refid="sourcecode"/>
+            <logger type="jdepend-xml" outfile="${dir.reports.pdepend}/jdepend.xml"/>
+            <logger type="jdepend-chart" outfile="${dir.reports.pdepend}/dependencies.svg"/>
+            <logger type="overview-pyramid" outfile="${dir.reports.pdepend}/overview-pyramid.svg"/>
+        </phpdepend>
+    </target>
+
+    <!-- Measure the size and analyzing the structure of a project -->
+    <target name="check:loc" depends="build:prepare">
+        <phploc reportType="txt" reportName="phploc" reportDirectory="${dir.reports}">
+            <fileset refid="sourcecode"/>
+        </phploc>
+    </target>
+
+    <!-- PHPUnit tests -->
+    <target name="test:phpunit" depends="build:prepare">
+        <exec command="${tests.phpunit.command}" passthru="true"/>
+    </target>
+
+    <!-- Run mutation testing -->
+    <target name="test:infection" depends="build:prepare">
+        <exec command="${tests.mutation.command}" passthru="true"/>
+    </target>
+
+    <!-- Project build clean -->
+    <target name="build:clean">
+        <if>
+            <available file="${dir.reports}" type="dir" property="dir_is_available"/>
+            <then>
+                <delete dir="${dir.reports}"/>
+            </then>
+        </if>
+    </target>
+
+    <!-- Project build prepare -->
+    <target name="build:prepare" depends="build:clean">
+        <mkdir dir="${dir.reports}"/>
+        <mkdir dir="${dir.reports.pdepend}"/>
+        <mkdir dir="${dir.reports.coverage}"/>
+    </target>
+
+    <!-- Checkout and finalization -->
+    <target name="app:checkout">
+        <tstamp>
+            <format property="date_end" pattern="%Y-%m-%d %H:%M"/>
+        </tstamp>
+
+        <echo msg="--------------------------------------------"/>
+        <echo msg="Build tests finished at: ${date_end}"/>
+        <echo msg="--------------------------------------------"/>
+    </target>
+</project>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Meritoo Bundle" basedir="." default="build:main" phingVersion="2.16.0">
+    <!-- Properties -->
+    <if>
+        <available file="${project.basedir}/phing/properties" property="custom.properties.available"/>
+        <then>
+            <property file="${project.basedir}/phing/properties" />
+        </then>
+        <else>
+            <property file="${project.basedir}/phing/properties.dist" />
+        </else>
+    </if>
+
+    <!-- Default / main target -->
+    <target name="build:main"
+            depends="build:app,
+                    build:tests"
+    />
+
+    <!-- Build app -->
+    <target name="build:app">
+        <phing phingfile="${project.basedir}/phing/app.xml" haltonfailure="true" />
+    </target>
+
+    <!-- Build tests -->
+    <target name="build:tests">
+        <phing phingfile="${project.basedir}/phing/tests.xml" haltonfailure="true" />
+    </target>
+</project>

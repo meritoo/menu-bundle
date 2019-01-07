@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/7.3/phpunit.xsd"
+        bootstrap="vendor/autoload.php"
+        colors="true"
+        verbose="true"
+>
+    <php>
+        <ini name="error_reporting" value="-1"/>
+        <env name="KERNEL_CLASS" value="Meritoo\Test\MenuBundle\Kernel"/>
+        <env name="APP_DEFAULT_LOCALE" value="en"/>
+    </php>
+
+    <testsuites>
+        <testsuite name="Meritoo Package - Main Test Suite">
+            <directory>tests/</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory>src/</directory>
+        </whitelist>
+    </filter>
+
+    <logging>
+        <log type="coverage-html" target="build/reports/phpunit_coverage/html"/>
+        <log type="coverage-clover" target="build/reports/coveralls/clover.xml"/>
+    </logging>
+</phpunit>
