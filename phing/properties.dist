@@ -50,8 +50,7 @@ dir.tests = ${project.basedir}/tests
 #
 dir.build = ${project.basedir}/build
 dir.reports = ${dir.build}/reports
-dir.reports.pdepend = ${dir.reports}/pdepend
-dir.reports.coverage = ${dir.reports}/phpunit_coverage
+dir.reports.coverage = ${dir.reports}/phpunit-coverage
 
 # Data directories
 #
@@ -63,6 +62,16 @@ dir.data.temporary = ${dir.data}/tmp
 dir.docker = ${project.basedir}/docker
 dir.docker.data = ${dir.docker}/data/db
 dir.docker.logs = ${dir.docker}/logs/nginx
+
+# --------------------------------------------------------------------------------
+# Static Analysis
+# --------------------------------------------------------------------------------
+
+# Paths of frameworks used to run analysis:
+# - PHPStan
+#
+check.phpstan.command = ./vendor/bin/phpstan analyse
+check.php_coveralls.command = ./vendor/bin/php-coveralls --ansi -v
 
 # --------------------------------------------------------------------------------
 # Testing
