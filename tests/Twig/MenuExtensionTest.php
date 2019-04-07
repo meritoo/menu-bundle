@@ -1,0 +1,99 @@
+<?php
+
+/**
+ * (c) Meritoo.pl, http://www.meritoo.pl
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
+namespace Meritoo\Test\MenuBundle\Twig;
+
+use Meritoo\CommonBundle\Test\Twig\Base\BaseTwigExtensionTestCase;
+use Meritoo\MenuBundle\Twig\MenuExtension;
+
+/**
+ * Test case for the twig extension related to menu
+ *
+ * @author    Meritoo <github@meritoo.pl>
+ * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers    \Meritoo\MenuBundle\Twig\MenuExtension
+ */
+class MenuExtensionTest extends BaseTwigExtensionTestCase
+{
+    public function testGetFunctions(): void
+    {
+        $functions = static::$container
+            ->get($this->getExtensionNamespace())
+            ->getFunctions()
+        ;
+
+        static::assertCount(1, $functions);
+    }
+
+    /**
+     * @param string $name       Name of the rendered template (used internally only)
+     * @param string $sourceCode Source code of the rendered template
+     * @param string $expected   Expected result of rendering
+     *
+     * @dataProvider provideTemplateToRenderMenuBarUsingDefaults
+     */
+    public function testRenderMenuBarUsingTestEnvironment(string $name, string $sourceCode, string $expected): void
+    {
+        $this->verifyRenderedTemplate($name, $sourceCode, $expected);
+    }
+
+    /**
+     * @param string $name       Name of the rendered template (used internally only)
+     * @param string $sourceCode Source code of the rendered template
+     * @param string $expected   Expected result of rendering
+     *
+     * @dataProvider provideTemplateToRenderMenuBarUsingDefaults
+     */
+    public function testRenderMenuBarUsingDefaults(string $name, string $sourceCode, string $expected): void
+    {
+        static::bootKernel([
+            'environment' => 'defaults',
+        ]);
+
+        $this->verifyRenderedTemplate($name, $sourceCode, $expected);
+    }
+
+    public function provideTemplateToRenderMenuBarUsingDefaults(): ?\Generator
+    {
+        yield[
+            'without-items',
+            '{{ meritoo_menu_bar({}) }}',
+            '',
+        ];
+
+        yield[
+            '1-item-only-with-empty-strings',
+            '{{ meritoo_menu_bar({\'\': \'/\'}) }}',
+            '',
+        ];
+
+        yield[
+            '1-item-only-with-not-empty-name-and-empty-url',
+            '{{ meritoo_menu_bar({\'Test1\': \'\'}) }}',
+            '<div class="container"><div class="item"><a href="">Test1</a></div></div>',
+        ];
+
+        yield[
+            'more-than-1-item',
+            '{{ meritoo_menu_bar({\'Test 1\': \'/test\', \'Test 2\': \'/test/2\', \'Test 3\': \'/test/46/test\'}) }}',
+            '<div class="container"><div class="item"><a href="/test">Test 1</a></div><div class="item"><a href="/test/2">Test 2</a></div><div class="item"><a href="/test/46/test">Test 3</a></div></div>',
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getExtensionNamespace(): string
+    {
+        return MenuExtension::class;
+    }
+}
