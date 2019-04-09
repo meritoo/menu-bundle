@@ -8,43 +8,35 @@
 
 declare(strict_types=1);
 
-namespace Meritoo\MenuBundle\Domain;
+namespace Meritoo\Test\MenuBundle\Domain\Base\BaseMenuPart;
 
 use Meritoo\Common\Collection\Templates;
 use Meritoo\MenuBundle\Domain\Base\BaseMenuPart;
 
 /**
- * Link
+ * Part of menu used by test case of BaseMenuPart
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @coversNothing
  */
-class Link extends BaseMenuPart
+class MyFirstMenuPart extends BaseMenuPart
 {
     /**
-     * Name of link
-     *
      * @var string
      */
     private $name;
 
     /**
-     * Url of link
-     *
-     * @var string
-     */
-    private $url;
-
-    /**
      * Class constructor
      *
-     * @param string $name Name of link
-     * @param string $url  Url of link
+     * @param string $name
      */
-    public function __construct(string $name, string $url)
+    public function __construct(string $name)
     {
         $this->name = $name;
-        $this->url = $url;
     }
 
     /**
@@ -54,20 +46,6 @@ class Link extends BaseMenuPart
     {
         return [
             'name' => $this->name,
-            'url'  => $this->url,
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function render(Templates $templates): string
-    {
-        // Link without name?
-        if ('' === $this->name) {
-            return '';
-        }
-
-        return parent::render($templates);
     }
 }

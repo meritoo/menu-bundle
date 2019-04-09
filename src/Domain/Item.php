@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace Meritoo\MenuBundle\Domain;
 
 use Meritoo\Common\Collection\Templates;
-use Meritoo\Common\Renderable\RenderableInterface;
+use Meritoo\MenuBundle\Domain\Base\BaseMenuPart;
 
 /**
  * Item of menu. Contains link.
@@ -19,7 +19,7 @@ use Meritoo\Common\Renderable\RenderableInterface;
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
  */
-class Item implements RenderableInterface
+class Item extends BaseMenuPart
 {
     /**
      * Item's link
@@ -29,6 +29,13 @@ class Item implements RenderableInterface
     private $link;
 
     /**
+     * Rendered and prepared to display item's link
+     *
+     * @var string
+     */
+    private $linkRendered;
+
+    /**
      * Class constructor
      *
      * @param Link $link Item's link
@@ -36,25 +43,6 @@ class Item implements RenderableInterface
     public function __construct(Link $link)
     {
         $this->link = $link;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function render(Templates $templates): string
-    {
-        $linkRendered = $this->link->render($templates);
-
-        // Item with not rendered link won't be rendered
-        if ('' === $linkRendered) {
-            return '';
-        }
-
-        $template = $templates->findTemplate(static::class);
-
-        return $template->fill([
-            'link' => $linkRendered,
-        ]);
     }
 
     /**
@@ -69,5 +57,48 @@ class Item implements RenderableInterface
         $link = new Link($linkName, $linkUrl);
 
         return new static($link);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function prepareTemplateValues(Templates $templates): array
+    {
+        $linkRendered = $this->renderLink($templates);
+
+        return [
+            'link' => $linkRendered,
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function render(Templates $templates): string
+    {
+        $linkRendered = $this->renderLink($templates);
+
+        // Item without link?
+        if ('' === $linkRendered) {
+            return '';
+        }
+
+        return parent::render($templates);
+    }
+
+    /**
+     * Renders item's link
+     *
+     * @param Templates $templates Collection/storage of templates that will be required while rendering this and
+     *                             related objects, e.g. children of this object
+     * @return string
+     */
+    private function renderLink(Templates $templates): string
+    {
+        if (null === $this->linkRendered) {
+            $this->linkRendered = $this->link->render($templates);
+        }
+
+        return $this->linkRendered;
     }
 }
