@@ -16,6 +16,7 @@ use Meritoo\Common\Exception\ValueObject\Template\TemplateNotFoundException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\ValueObject\Template;
+use Meritoo\MenuBundle\Domain\Html\Attributes;
 use Meritoo\MenuBundle\Domain\Item;
 use Meritoo\MenuBundle\Domain\Link;
 use stdClass;
@@ -110,6 +111,15 @@ class ItemTest extends BaseTestCase
 
     public function provideTemplatesAndItemToRender(): ?Generator
     {
+        $link = new Link('Test', '/');
+
+        $item1 = new Item($link);
+        $item1->addAttribute(Attributes::ATTRIBUTE_CSS_CLASS, 'blue');
+
+        $item2 = new Item($link);
+        $item2->addAttribute('id', 'main-item');
+        $item2->addAttribute('data-position', '12');
+
         yield[
             'Simple template',
             new Templates([
@@ -128,6 +138,26 @@ class ItemTest extends BaseTestCase
             ]),
             new Item(new Link('Test', '/')),
             '<div class="item" data-placement="top"><a href="/" class="blue" data-title="test">Test</a></div>',
+        ];
+
+        yield[
+            'With 1 attribute',
+            new Templates([
+                Link::class => new Template('<a href="%url%"%attributes%>%name%</a>'),
+                Item::class => new Template('<div%attributes%>%link%</div>'),
+            ]),
+            $item1,
+            '<div class="blue"><a href="/">Test</a></div>',
+        ];
+
+        yield[
+            'With more than 1 attribute',
+            new Templates([
+                Link::class => new Template('<a href="%url%"%attributes%>%name%</a>'),
+                Item::class => new Template('<div%attributes%>%link%</div>'),
+            ]),
+            $item2,
+            '<div id="main-item" data-position="12"><a href="/">Test</a></div>',
         ];
     }
 

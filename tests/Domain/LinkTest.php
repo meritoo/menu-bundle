@@ -10,13 +10,16 @@ declare(strict_types=1);
 
 namespace Meritoo\Test\MenuBundle\Domain;
 
+use Generator;
 use Meritoo\Common\Collection\Templates;
 use Meritoo\Common\Exception\ValueObject\Template\TemplateNotFoundException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\ValueObject\Template;
+use Meritoo\MenuBundle\Domain\Html\Attributes;
 use Meritoo\MenuBundle\Domain\Item;
 use Meritoo\MenuBundle\Domain\Link;
+use stdClass;
 
 /**
  * Test case for the link
@@ -81,7 +84,7 @@ class LinkTest extends BaseTestCase
         static::assertSame($expected, $link->render($templates), $description);
     }
 
-    public function provideIncompleteTemplates(): ?\Generator
+    public function provideIncompleteTemplates(): ?Generator
     {
         $template = 'Template with \'%s\' index was not found. Did you provide all required templates?';
 
@@ -92,7 +95,7 @@ class LinkTest extends BaseTestCase
 
         yield[
             new Templates([
-                \stdClass::class => new Template('<a href="%url%">%name%</a>'),
+                stdClass::class => new Template('<a href="%url%">%name%</a>'),
             ]),
             sprintf($template, Link::class),
         ];
@@ -105,8 +108,15 @@ class LinkTest extends BaseTestCase
         ];
     }
 
-    public function provideTemplatesAndLinkToRender(): ?\Generator
+    public function provideTemplatesAndLinkToRender(): ?Generator
     {
+        $link1 = new Link('Test 1', '/');
+        $link1->addAttribute(Attributes::ATTRIBUTE_CSS_CLASS, 'blue');
+
+        $link2 = new Link('Test 2', '/');
+        $link2->addAttribute('id', 'main-link');
+        $link2->addAttribute('data-position', '12');
+
         yield[
             'Simple template',
             new Templates([
@@ -123,6 +133,24 @@ class LinkTest extends BaseTestCase
             ]),
             new Link('Test', '/'),
             '<a href="/" class="blue" data-title="test">Test</a>',
+        ];
+
+        yield[
+            'With 1 attribute',
+            new Templates([
+                Link::class => new Template('<a href="%url%"%attributes%>%name%</a>'),
+            ]),
+            $link1,
+            '<a href="/" class="blue">Test 1</a>',
+        ];
+
+        yield[
+            'With more than 1 attribute',
+            new Templates([
+                Link::class => new Template('<a href="%url%"%attributes%>%name%</a>'),
+            ]),
+            $link2,
+            '<a href="/" id="main-link" data-position="12">Test 2</a>',
         ];
     }
 }

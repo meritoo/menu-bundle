@@ -15,6 +15,7 @@ use Meritoo\Common\Exception\ValueObject\Template\TemplateNotFoundException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Common\ValueObject\Template;
+use Meritoo\MenuBundle\Domain\Html\Attributes;
 use Meritoo\MenuBundle\Domain\Item;
 use Meritoo\MenuBundle\Domain\Link;
 use Meritoo\MenuBundle\Domain\Menu;
@@ -136,6 +137,17 @@ class MenuTest extends BaseTestCase
 
     public function provideTemplatesAndMenuToRender(): ?\Generator
     {
+        $items = [
+            new Item(new Link('Test 1', '/test1')),
+        ];
+
+        $menu1 = new Menu($items);
+        $menu1->addAttribute(Attributes::ATTRIBUTE_CSS_CLASS, 'container');
+
+        $menu2 = new Menu($items);
+        $menu2->addAttribute('id', 'main-menu');
+        $menu2->addAttribute('data-position', '12');
+
         yield[
             'Menu with 1 item only',
             new Templates([
@@ -143,9 +155,7 @@ class MenuTest extends BaseTestCase
                 Item::class => new Template('<div class="item">%link%</div>'),
                 Menu::class => new Template('<div class="container">%items%</div>'),
             ]),
-            new Menu([
-                new Item(new Link('Test 1', '/test1')),
-            ]),
+            new Menu($items),
             '<div class="container">'
             . '<div class="item"><a href="/test1">Test 1</a></div>'
             . '</div>',
@@ -188,6 +198,32 @@ class MenuTest extends BaseTestCase
             . '<li class="item"><a href="/test2" class="blue">Test 2</a></li>'
             . '<li class="item"><a href="/test3" class="blue">Test 3</a></li>'
             . '</ul>'
+            . '</div>',
+        ];
+
+        yield[
+            'With 1 attribute',
+            new Templates([
+                Link::class => new Template('<a href="%url%">%name%</a>'),
+                Item::class => new Template('<div class="item">%link%</div>'),
+                Menu::class => new Template('<div%attributes%>%items%</div>'),
+            ]),
+            $menu1,
+            '<div class="container">'
+            . '<div class="item"><a href="/test1">Test 1</a></div>'
+            . '</div>',
+        ];
+
+        yield[
+            'With more than 1 attribute',
+            new Templates([
+                Link::class => new Template('<a href="%url%">%name%</a>'),
+                Item::class => new Template('<div class="item">%link%</div>'),
+                Menu::class => new Template('<div%attributes%>%items%</div>'),
+            ]),
+            $menu2,
+            '<div id="main-menu" data-position="12">'
+            . '<div class="item"><a href="/test1">Test 1</a></div>'
             . '</div>',
         ];
     }
