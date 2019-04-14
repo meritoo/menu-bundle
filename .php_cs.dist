@@ -6,7 +6,10 @@ $finder = PhpCsFixer\Finder::create()
      * - all DependencyInjection/Configuration classes: the Configuration.php files
      * - autoloader from /app directory: autoload.php
      */
-    ->notPath('/DependencyInjection\/Configuration\.php/')
+    ->notPath([
+        '/DependencyInjection\/Configuration\.php/',
+        '/tests\/Resources\/var/',
+    ])
     ->in([
         __DIR__ . '/src',
         __DIR__ . '/tests',
@@ -16,6 +19,8 @@ $finder = PhpCsFixer\Finder::create()
 return PhpCsFixer\Config::create()
     ->setRules([
         '@Symfony'                            => true,
+        '@PhpCsFixer'                         => true,
+        '@PHP71Migration'                     => true,
         'binary_operator_spaces'              => [
             'align_double_arrow' => true,
         ],
