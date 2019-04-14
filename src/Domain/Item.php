@@ -50,8 +50,8 @@ class Item extends BaseMenuPart
      *
      * @param string     $linkName       Name of item's link
      * @param string     $linkUrl        Url of item's link
-     * @param array|null $linkAttributes (optional) Attributes of item's link. Default: null (not provided).
-     * @param array|null $itemAttributes (optional) Attributes of the item. Default: null (not provided).
+     * @param null|array $linkAttributes (optional) Attributes of item's link. Default: null (not provided).
+     * @param null|array $itemAttributes (optional) Attributes of the item. Default: null (not provided).
      * @return Item
      */
     public static function create(
@@ -77,18 +77,6 @@ class Item extends BaseMenuPart
     /**
      * {@inheritdoc}
      */
-    protected function prepareTemplateValues(Templates $templates): array
-    {
-        $linkRendered = $this->renderLink($templates);
-
-        return [
-            'link' => $linkRendered,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function render(Templates $templates): string
     {
         $linkRendered = $this->renderLink($templates);
@@ -99,6 +87,18 @@ class Item extends BaseMenuPart
         }
 
         return parent::render($templates);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function prepareTemplateValues(Templates $templates): array
+    {
+        $linkRendered = $this->renderLink($templates);
+
+        return [
+            'link' => $linkRendered,
+        ];
     }
 
     /**

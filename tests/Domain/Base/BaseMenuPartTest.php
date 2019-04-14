@@ -25,6 +25,9 @@ use Meritoo\Test\MenuBundle\Domain\Base\BaseMenuPart\MySecondMenuPart;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers    \Meritoo\MenuBundle\Domain\Base\BaseMenuPart
  */
 class BaseMenuPartTest extends BaseTestCase
 {

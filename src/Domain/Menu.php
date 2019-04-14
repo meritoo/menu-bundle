@@ -50,9 +50,9 @@ class Menu extends BaseMenuPart
      *
      * @param array      $links          An array of arrays (0-based indexes): [0] name of link, [1] url of link, [2]
      *                                   (optional) attributes of link, [3] (optional) attributes of item
-     * @param array|null $menuAttributes (optional) Attributes of the main container. It's an array of key-value pairs,
+     * @param null|array $menuAttributes (optional) Attributes of the main container. It's an array of key-value pairs,
      *                                   where key - attribute, value - value of attribute
-     * @return Menu|null
+     * @return null|Menu
      */
     public static function create(array $links, ?array $menuAttributes = null): ?Menu
     {
@@ -84,18 +84,6 @@ class Menu extends BaseMenuPart
     /**
      * {@inheritdoc}
      */
-    protected function prepareTemplateValues(Templates $templates): array
-    {
-        $rendered = $this->renderItems($templates);
-
-        return [
-            'items' => $rendered,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function render(Templates $templates): string
     {
         // Menu without items?
@@ -111,6 +99,18 @@ class Menu extends BaseMenuPart
         }
 
         return parent::render($templates);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function prepareTemplateValues(Templates $templates): array
+    {
+        $rendered = $this->renderItems($templates);
+
+        return [
+            'items' => $rendered,
+        ];
     }
 
     /**

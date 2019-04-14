@@ -21,6 +21,9 @@ use Meritoo\MenuBundle\Domain\Html\Attributes;
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>
+ *
+ * @internal
+ * @covers    \Meritoo\MenuBundle\Domain\Html\Attributes
  */
 class AttributesTest extends BaseTestCase
 {

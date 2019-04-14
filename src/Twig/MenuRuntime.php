@@ -30,7 +30,7 @@ class MenuRuntime implements RuntimeExtensionInterface
      *
      * @param array      $links          An array of arrays (0-based indexes): [0] name of link, [1] url of link, [2]
      *                                   (optional) attributes of link, [3] (optional) attributes of item
-     * @param array|null $menuAttributes (optional) Attributes of the main container. It's an array of key-value pairs,
+     * @param null|array $menuAttributes (optional) Attributes of the main container. It's an array of key-value pairs,
      *                                   where key - attribute, value - value of attribute
      * @return string
      */

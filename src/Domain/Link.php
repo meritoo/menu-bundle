@@ -50,17 +50,6 @@ class Link extends BaseMenuPart
     /**
      * {@inheritdoc}
      */
-    protected function prepareTemplateValues(Templates $templates): array
-    {
-        return [
-            'name' => $this->name,
-            'url'  => $this->url,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function render(Templates $templates): string
     {
         // Link without name?
@@ -69,5 +58,16 @@ class Link extends BaseMenuPart
         }
 
         return parent::render($templates);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function prepareTemplateValues(Templates $templates): array
+    {
+        return [
+            'name' => $this->name,
+            'url'  => $this->url,
+        ];
     }
 }

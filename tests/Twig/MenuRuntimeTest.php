@@ -29,6 +29,15 @@ class MenuRuntimeTest extends KernelTestCase
 {
     use BaseTestCaseTrait;
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        static::bootKernel();
+    }
+
     public function testConstructor(): void
     {
         static::assertHasNoConstructor(MenuRuntime::class);
@@ -45,7 +54,7 @@ class MenuRuntimeTest extends KernelTestCase
      * @param string     $expected       Expected rendered menu bar
      * @param array      $links          An array of arrays (0-based indexes): [0] name of link, [1] url of link, [2]
      *                                   (optional) attributes of link, [3] (optional) attributes of item
-     * @param array|null $menuAttributes (optional) Attributes of the main container. It's an array of key-value pairs,
+     * @param null|array $menuAttributes (optional) Attributes of the main container. It's an array of key-value pairs,
      *                                   where key - attribute, value - value of attribute
      *
      * @dataProvider provideLinksNamesUrlsToRenderMenuBar
@@ -238,14 +247,5 @@ class MenuRuntimeTest extends KernelTestCase
                 Attributes::ATTRIBUTE_CSS_CLASS => 'my-menu',
             ],
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        static::bootKernel();
     }
 }
