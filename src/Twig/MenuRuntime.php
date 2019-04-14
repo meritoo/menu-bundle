@@ -28,12 +28,15 @@ class MenuRuntime implements RuntimeExtensionInterface
     /**
      * Renders menu bar with given items
      *
-     * @param array $linksNamesUrls Pairs of key-value where: key - name of link, value - url of link
+     * @param array      $links          An array of arrays (0-based indexes): [0] name of link, [1] url of link, [2]
+     *                                   (optional) attributes of link, [3] (optional) attributes of item
+     * @param array|null $menuAttributes (optional) Attributes of the main container. It's an array of key-value pairs,
+     *                                   where key - attribute, value - value of attribute
      * @return string
      */
-    public function renderMenuBar(array $linksNamesUrls): string
+    public function renderMenuBar(array $links, ?array $menuAttributes = null): string
     {
-        $menu = Menu::create($linksNamesUrls);
+        $menu = Menu::create($links, $menuAttributes);
 
         if (null === $menu) {
             return '';
@@ -41,9 +44,9 @@ class MenuRuntime implements RuntimeExtensionInterface
 
         // todo Load templates from configuration
         $templates = Templates::fromArray([
-            Link::class => '<a href="%url%">%name%</a>',
-            Item::class => '<div class="item">%link%</div>',
-            Menu::class => '<div class="container">%items%</div>',
+            Link::class => '<a href="%url%"%attributes%>%name%</a>',
+            Item::class => '<div%attributes%>%link%</div>',
+            Menu::class => '<div%attributes%>%items%</div>',
         ]);
 
         return $menu->render($templates);

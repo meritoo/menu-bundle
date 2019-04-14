@@ -48,22 +48,37 @@ class Menu extends BaseMenuPart
     /**
      * Creates new menu
      *
-     * @param array $linksNamesUrls Pairs of key-value where: key - name of link, value - url of link
+     * @param array      $links          An array of arrays (0-based indexes): [0] name of link, [1] url of link, [2]
+     *                                   (optional) attributes of link, [3] (optional) attributes of item
+     * @param array|null $menuAttributes (optional) Attributes of the main container. It's an array of key-value pairs,
+     *                                   where key - attribute, value - value of attribute
      * @return Menu|null
      */
-    public static function create(array $linksNamesUrls): ?Menu
+    public static function create(array $links, ?array $menuAttributes = null): ?Menu
     {
-        if (empty($linksNamesUrls)) {
+        if (empty($links)) {
             return null;
         }
 
         $items = [];
 
-        foreach ($linksNamesUrls as $name => $url) {
-            $items[] = Item::create($name, $url);
+        foreach ($links as $link) {
+            $name = $link[0] ?? '';
+            $url = $link[1] ?? '';
+
+            $linkAttributes = $link[2] ?? null;
+            $itemAttributes = $link[3] ?? null;
+
+            $items[] = Item::create($name, $url, $linkAttributes, $itemAttributes);
         }
 
-        return new static($items);
+        $menu = new static($items);
+
+        if (null !== $menuAttributes) {
+            $menu->addAttributes($menuAttributes);
+        }
+
+        return $menu;
     }
 
     /**

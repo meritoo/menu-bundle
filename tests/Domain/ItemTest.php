@@ -15,6 +15,7 @@ use Meritoo\Common\Collection\Templates;
 use Meritoo\Common\Exception\ValueObject\Template\TemplateNotFoundException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Reflection;
 use Meritoo\Common\ValueObject\Template;
 use Meritoo\MenuBundle\Domain\Html\Attributes;
 use Meritoo\MenuBundle\Domain\Item;
@@ -69,6 +70,45 @@ class ItemTest extends BaseTestCase
     {
         $item = new Item(new Link('', '/'));
         static::assertSame('', $item->render(new Templates()));
+    }
+
+    public function testAddAttribute(): void
+    {
+        $item = new Item(new Link('', '/'));
+        $item->addAttribute('id', 'test');
+        $item->addAttribute(Attributes::ATTRIBUTE_CSS_CLASS, 'blue-box');
+
+        $expected = new Attributes([
+            'id'                            => 'test',
+            Attributes::ATTRIBUTE_CSS_CLASS => 'blue-box',
+        ]);
+
+        $existing = Reflection::getPropertyValue($item, 'attributes', true);
+        static::assertEquals($expected, $existing);
+    }
+
+    public function testAddAttributes(): void
+    {
+        $item = new Item(new Link('', '/'));
+
+        $item->addAttributes([
+            'id' => 'test',
+        ]);
+
+        $item->addAttributes([
+            'id'                            => 'test',
+            'data-start'                    => 'true',
+            Attributes::ATTRIBUTE_CSS_CLASS => 'blue-box',
+        ]);
+
+        $expected = new Attributes([
+            'id'                            => 'test',
+            'data-start'                    => 'true',
+            Attributes::ATTRIBUTE_CSS_CLASS => 'blue-box',
+        ]);
+
+        $existing = Reflection::getPropertyValue($item, 'attributes', true);
+        static::assertEquals($expected, $existing);
     }
 
     public function provideIncompleteTemplates(): ?Generator
@@ -162,46 +202,100 @@ class ItemTest extends BaseTestCase
     }
 
     /**
-     * @param string $description Description of test
-     * @param string $linkName    Name of item's link
-     * @param string $linkUrl     Url of item's link
-     * @param Item   $expected    Expected Item
+     * @param string     $description    Description of test
+     * @param Item       $expected       Expected Item
+     * @param string     $linkName       Name of item's link
+     * @param string     $linkUrl        Url of item's link
+     * @param array|null $linkAttributes (optional) Attributes of item's link. Default: null (not provided).
+     * @param array|null $itemAttributes (optional) Attributes of the item. Default: null (not provided).
      *
-     * @dataProvider provideNameUrlToCreate
+     * @dataProvider provideDataToCreate
      */
-    public function testCreate(string $description, string $linkName, string $linkUrl, Item $expected): void
-    {
-        static::assertEquals($expected, Item::create($linkName, $linkUrl), $description);
+    public function testCreate(
+        string $description,
+        Item $expected,
+        string $linkName,
+        string $linkUrl,
+        ?array $linkAttributes = null,
+        ?array $itemAttributes = null
+    ): void {
+        $item = Item::create($linkName, $linkUrl, $linkAttributes, $itemAttributes);
+        static::assertEquals($expected, $item, $description);
     }
 
-    public function provideNameUrlToCreate(): ?Generator
+    public function provideDataToCreate(): ?Generator
     {
+        $linkAttributes = [
+            'id'                            => 'test',
+            Attributes::ATTRIBUTE_CSS_CLASS => 'my-class',
+        ];
+
+        $itemAttributes = [
+            'data-show'                     => 'test',
+            Attributes::ATTRIBUTE_CSS_CLASS => 'my-big-class',
+        ];
+
+        $linkWithAttributes = new Link('Test', '/test');
+        $linkWithAttributes->addAttributes($linkAttributes);
+
+        $itemWithAttributes = new Item(new Link('Test', '/test'));
+        $itemWithAttributes->addAttributes($itemAttributes);
+
+        $itemWithAttributesAndLinkWithAttributes = new Item($linkWithAttributes);
+        $itemWithAttributesAndLinkWithAttributes->addAttributes($itemAttributes);
+
         yield[
             'An empty name and url of link',
-            '',
-            '',
             new Item(new Link('', '')),
+            '',
+            '',
         ];
 
         yield[
             'Not empty name and empty url of link',
+            new Item(new Link('Test', '')),
             'Test',
             '',
-            new Item(new Link('Test', '')),
         ];
 
         yield[
             'An empty name and not empty url of link',
+            new Item(new Link('', 'Test')),
             '',
             'Test',
-            new Item(new Link('', 'Test')),
         ];
 
         yield[
             'Not empty name and not empty url of link',
+            new Item(new Link('Test', '/test')),
             'Test',
             '/test',
-            new Item(new Link('Test', '/test')),
+        ];
+
+        yield[
+            'Link with attributes',
+            new Item($linkWithAttributes),
+            'Test',
+            '/test',
+            $linkAttributes,
+        ];
+
+        yield[
+            'Item with attributes',
+            $itemWithAttributes,
+            'Test',
+            '/test',
+            null,
+            $itemAttributes,
+        ];
+
+        yield[
+            'Link and item with attributes',
+            $itemWithAttributesAndLinkWithAttributes,
+            'Test',
+            '/test',
+            $linkAttributes,
+            $itemAttributes,
         ];
     }
 }

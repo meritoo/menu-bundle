@@ -48,15 +48,30 @@ class Item extends BaseMenuPart
     /**
      * Creates new item
      *
-     * @param string $linkName Name of item's link
-     * @param string $linkUrl  Url of item's link
+     * @param string     $linkName       Name of item's link
+     * @param string     $linkUrl        Url of item's link
+     * @param array|null $linkAttributes (optional) Attributes of item's link. Default: null (not provided).
+     * @param array|null $itemAttributes (optional) Attributes of the item. Default: null (not provided).
      * @return Item
      */
-    public static function create(string $linkName, string $linkUrl): Item
-    {
+    public static function create(
+        string $linkName,
+        string $linkUrl,
+        ?array $linkAttributes = null,
+        ?array $itemAttributes = null
+    ): Item {
         $link = new Link($linkName, $linkUrl);
+        $item = new static($link);
 
-        return new static($link);
+        if (null !== $linkAttributes) {
+            $link->addAttributes($linkAttributes);
+        }
+
+        if (null !== $itemAttributes) {
+            $item->addAttributes($itemAttributes);
+        }
+
+        return $item;
     }
 
     /**

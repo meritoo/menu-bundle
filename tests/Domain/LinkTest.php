@@ -15,6 +15,7 @@ use Meritoo\Common\Collection\Templates;
 use Meritoo\Common\Exception\ValueObject\Template\TemplateNotFoundException;
 use Meritoo\Common\Test\Base\BaseTestCase;
 use Meritoo\Common\Type\OopVisibilityType;
+use Meritoo\Common\Utilities\Reflection;
 use Meritoo\Common\ValueObject\Template;
 use Meritoo\MenuBundle\Domain\Html\Attributes;
 use Meritoo\MenuBundle\Domain\Item;
@@ -82,6 +83,45 @@ class LinkTest extends BaseTestCase
     public function testRender(string $description, Templates $templates, Link $link, string $expected): void
     {
         static::assertSame($expected, $link->render($templates), $description);
+    }
+
+    public function testAddAttribute(): void
+    {
+        $link = new Link('Test', '/');
+        $link->addAttribute('id', 'test');
+        $link->addAttribute(Attributes::ATTRIBUTE_CSS_CLASS, 'blue-box');
+
+        $expected = new Attributes([
+            'id'                            => 'test',
+            Attributes::ATTRIBUTE_CSS_CLASS => 'blue-box',
+        ]);
+
+        $existing = Reflection::getPropertyValue($link, 'attributes', true);
+        static::assertEquals($expected, $existing);
+    }
+
+    public function testAddAttributes(): void
+    {
+        $link = new Link('Test', '/');
+
+        $link->addAttributes([
+            'id' => 'test',
+        ]);
+
+        $link->addAttributes([
+            'id'                            => 'test',
+            'data-start'                    => 'true',
+            Attributes::ATTRIBUTE_CSS_CLASS => 'blue-box',
+        ]);
+
+        $expected = new Attributes([
+            'id'                            => 'test',
+            'data-start'                    => 'true',
+            Attributes::ATTRIBUTE_CSS_CLASS => 'blue-box',
+        ]);
+
+        $existing = Reflection::getPropertyValue($link, 'attributes', true);
+        static::assertEquals($expected, $existing);
     }
 
     public function provideIncompleteTemplates(): ?Generator

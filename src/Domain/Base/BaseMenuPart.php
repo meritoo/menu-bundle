@@ -50,6 +50,18 @@ abstract class BaseMenuPart implements RenderableInterface
     }
 
     /**
+     * Adds attributes
+     *
+     * @param array $attributes Key-value pairs, where key - name of attribute, value-value of attribute
+     */
+    public function addAttributes(array $attributes): void
+    {
+        foreach ($attributes as $name => $value) {
+            $this->addAttribute($name, $value);
+        }
+    }
+
+    /**
      * Prepares and returns values used to fill template while rendering
      *
      * @param Templates $templates Collection/storage of templates that will be required while rendering this and
