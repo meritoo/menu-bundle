@@ -13,3 +13,11 @@ services:
     Meritoo\MenuBundle\:
         resource: '../../*'
         exclude: '../../{DependencyInjection,Exception,Resources}'
+
+    # Parameters of services
+    #
+    Meritoo\MenuBundle\Twig\MenuRuntime:
+        arguments:
+            $linkTemplate: '%meritoo_menu.templates.link%'
+            $itemTemplate: '%meritoo_menu.templates.item%'
+            $menuTemplate: '%meritoo_menu.templates.menu%'

@@ -14,7 +14,7 @@ use Meritoo\Common\Collection\Templates;
 use Meritoo\MenuBundle\Domain\Base\BaseMenuPart;
 
 /**
- * Item of menu. Contains link.
+ * Item of menu (container for a link)
  *
  * @author    Meritoo <github@meritoo.pl>
  * @copyright Meritoo <http://www.meritoo.pl>

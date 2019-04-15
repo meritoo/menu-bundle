@@ -26,6 +26,41 @@ use Twig\Extension\RuntimeExtensionInterface;
 class MenuRuntime implements RuntimeExtensionInterface
 {
     /**
+     * Template for a link in menu
+     *
+     * @var string
+     */
+    private $linkTemplate;
+
+    /**
+     * Template for an item in menu (container for a link)
+     *
+     * @var string
+     */
+    private $itemTemplate;
+
+    /**
+     * Template for the whole menu (container for items)
+     *
+     * @var string
+     */
+    private $menuTemplate;
+
+    /**
+     * Class constructor
+     *
+     * @param string $linkTemplate Template for a link in menu
+     * @param string $itemTemplate Template for an item in menu (container for a link)
+     * @param string $menuTemplate Template for the whole menu (container for items)
+     */
+    public function __construct(string $linkTemplate, string $itemTemplate, string $menuTemplate)
+    {
+        $this->linkTemplate = $linkTemplate;
+        $this->itemTemplate = $itemTemplate;
+        $this->menuTemplate = $menuTemplate;
+    }
+
+    /**
      * Renders menu bar with given items
      *
      * @param array      $links          An array of arrays (0-based indexes): [0] name of link, [1] url of link, [2]
@@ -42,13 +77,20 @@ class MenuRuntime implements RuntimeExtensionInterface
             return '';
         }
 
-        // todo Load templates from configuration
-        $templates = Templates::fromArray([
-            Link::class => '<a href="%url%"%attributes%>%name%</a>',
-            Item::class => '<div%attributes%>%link%</div>',
-            Menu::class => '<div%attributes%>%items%</div>',
-        ]);
+        return $menu->render($this->prepareTemplates());
+    }
 
-        return $menu->render($templates);
+    /**
+     * Prepares templates used to render menu
+     *
+     * @return Templates
+     */
+    private function prepareTemplates(): Templates
+    {
+        return Templates::fromArray([
+            Link::class => $this->linkTemplate,
+            Item::class => $this->itemTemplate,
+            Menu::class => $this->menuTemplate,
+        ]);
     }
 }

@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Meritoo\Test\MenuBundle\Twig;
 
 use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
+use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\MenuBundle\Domain\Html\Attributes;
 use Meritoo\MenuBundle\Twig\MenuRuntime;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -40,7 +41,12 @@ class MenuRuntimeTest extends KernelTestCase
 
     public function testConstructor(): void
     {
-        static::assertHasNoConstructor(MenuRuntime::class);
+        static::assertConstructorVisibilityAndArguments(
+            MenuRuntime::class,
+            OopVisibilityType::IS_PUBLIC,
+            3,
+            3
+        );
     }
 
     public function testIsInstanceOfRuntimeExtensionInterface(): void
