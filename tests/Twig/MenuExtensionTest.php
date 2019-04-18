@@ -40,7 +40,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
      * @param string $sourceCode Source code of the rendered template
      * @param string $expected   Expected result of rendering
      *
-     * @dataProvider provideTemplateToRenderMenuBarUsingDefaults
+     * @dataProvider provideTemplateToRenderMenuBarUsingTestEnvironment
      */
     public function testRenderMenuBarUsingTestEnvironment(string $name, string $sourceCode, string $expected): void
     {
@@ -254,6 +254,200 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
                 )
             }}',
             '<div id="main" class="my-menu"><div data-show="test" class="my-big-class"><a href="/test" id="main">Test 1</a></div><div><a href="/test/2" id="email" class="blue">Test 2</a></div><div id="test-test" data-show="true" class="my-last-class"><a href="/test/46/test" data-show="test" class="my-big-class">Test 3</a></div></div>',
+        ];
+    }
+
+    public function provideTemplateToRenderMenuBarUsingTestEnvironment(): ?Generator
+    {
+        yield[
+            'without-items',
+            '{{ meritoo_menu_bar({}) }}',
+            '',
+        ];
+
+        yield[
+            '1-item-only-with-empty-strings',
+            '{{
+                meritoo_menu_bar([
+                    [
+                        \'\',
+                        \'\'
+                    ]
+                ])
+            }}',
+            '',
+        ];
+
+        yield[
+            '1-item-only-with-not-empty-name-and-empty-url',
+            '{{
+                meritoo_menu_bar([
+                    [
+                        \'Test1\',
+                        \'\'
+                    ]
+                ])
+            }}',
+            '<div data-env="test"><div data-env="test"><a href="" data-env="test">Test1</a></div></div>',
+        ];
+
+        yield[
+            'more-than-1-item',
+            '{{
+                meritoo_menu_bar([
+                    [
+                        \'Test 1\',
+                        \'/test\'
+                    ],
+                    [
+                        \'Test 2\',
+                        \'/test/2\'
+                    ],
+                    [
+                        \'Test 3\',
+                        \'/test/46/test\'
+                    ]
+                ])
+            }}',
+            '<div data-env="test"><div data-env="test"><a href="/test" data-env="test">Test 1</a></div><div data-env="test"><a href="/test/2" data-env="test">Test 2</a></div><div data-env="test"><a href="/test/46/test" data-env="test">Test 3</a></div></div>',
+        ];
+
+        yield[
+            'with-attributes-of-links',
+            '{{
+                meritoo_menu_bar([
+                    [
+                        \'Test 1\',
+                        \'/test\',
+                        {
+                            \'id\': \'main\'
+                        }
+                    ],
+                    [
+                        \'Test 2\',
+                        \'/test/2\',
+                        {
+                            \'id\': \'email\',
+                            \'class\': \'blue\'
+                        }
+                    ],
+                    [
+                        \'Test 3\',
+                        \'/test/46/test\',
+                        {
+                            \'data-show\': \'test\',
+                            \'class\': \'my-big-class\'
+                        }
+                    ]
+                ])
+            }}',
+            '<div data-env="test"><div data-env="test"><a href="/test" id="main" data-env="test">Test 1</a></div><div data-env="test"><a href="/test/2" id="email" class="blue" data-env="test">Test 2</a></div><div data-env="test"><a href="/test/46/test" data-show="test" class="my-big-class" data-env="test">Test 3</a></div></div>',
+        ];
+
+        yield[
+            'with-attributes-of-items',
+            '{{
+                meritoo_menu_bar([
+                    [
+                        \'Test 1\',
+                        \'/test\',
+                        null,
+                        {
+                            \'data-show\': \'test\',
+                            \'class\': \'my-big-class\'
+                        }
+                    ],
+                    [
+                        \'Test 2\',
+                        \'/test/2\'
+                    ],
+                    [
+                        \'Test 3\',
+                        \'/test/46/test\',
+                        null,
+                        {
+                            \'id\': \'test-test\',
+                            \'data-show\': \'true\',
+                            \'class\': \'my-last-class\'
+                        }
+                    ]
+                ])
+            }}',
+            '<div data-env="test"><div data-show="test" class="my-big-class" data-env="test"><a href="/test" data-env="test">Test 1</a></div><div data-env="test"><a href="/test/2" data-env="test">Test 2</a></div><div id="test-test" data-show="true" class="my-last-class" data-env="test"><a href="/test/46/test" data-env="test">Test 3</a></div></div>',
+        ];
+
+        yield[
+            'with-attributes-of-menu',
+            '{{
+                meritoo_menu_bar(
+                    [
+                        [
+                            \'Test 1\',
+                            \'/test\'
+                        ],
+                        [
+                            \'Test 2\',
+                            \'/test/2\'
+                        ],
+                        [
+                            \'Test 3\',
+                            \'/test/46/test\'
+                        ]
+                    ],
+                    {
+                        \'id\': \'main\',
+                        \'class\': \'my-menu\'
+                    }
+                )
+            }}',
+            '<div id="main" class="my-menu" data-env="test"><div data-env="test"><a href="/test" data-env="test">Test 1</a></div><div data-env="test"><a href="/test/2" data-env="test">Test 2</a></div><div data-env="test"><a href="/test/46/test" data-env="test">Test 3</a></div></div>',
+        ];
+
+        yield[
+            'with-attributes-of-links-items-and-menu',
+            '{{
+                meritoo_menu_bar(
+                    [
+                        [
+                            \'Test 1\',
+                            \'/test\',
+                            {
+                                \'id\': \'main\'
+                            },
+                            {
+                                \'data-show\': \'test\',
+                                \'class\': \'my-big-class\'
+                            }
+                        ],
+                        [
+                            \'Test 2\',
+                            \'/test/2\',
+                            {
+                                \'id\': \'email\',
+                                \'class\': \'blue\'
+                            }
+                        ],
+                        [
+                            \'Test 3\',
+                            \'/test/46/test\',
+                            {
+                                \'data-show\': \'test\',
+                                \'class\': \'my-big-class\'
+                            },
+                            {
+                                \'id\': \'test-test\',
+                                \'data-show\': \'true\',
+                                \'class\': \'my-last-class\'
+                            }
+                        ]
+                    ],
+                    {
+                        \'id\': \'main\',
+                        \'class\': \'my-menu\'
+                    }
+                )
+            }}',
+            '<div id="main" class="my-menu" data-env="test"><div data-show="test" class="my-big-class" data-env="test"><a href="/test" id="main" data-env="test">Test 1</a></div><div data-env="test"><a href="/test/2" id="email" class="blue" data-env="test">Test 2</a></div><div id="test-test" data-show="true" class="my-last-class" data-env="test"><a href="/test/46/test" data-show="test" class="my-big-class" data-env="test">Test 3</a></div></div>',
         ];
     }
 

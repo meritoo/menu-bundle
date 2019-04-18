@@ -55,9 +55,37 @@ class MenuRuntimeTest extends KernelTestCase
      * @param null|array $menuAttributes (optional) Attributes of the main container. It's an array of key-value pairs,
      *                                   where key - attribute, value - value of attribute
      *
-     * @dataProvider provideLinksNamesUrlsToRenderMenuBar
+     * @dataProvider provideDataToRenderMenuBarUsingDefaults
      */
-    public function testRenderMenuBar(
+    public function testRenderMenuBarUsingDefaults(
+        string $description,
+        string $expected,
+        array $links,
+        ?array $menuAttributes = null
+    ): void {
+        static::bootKernel([
+            'environment' => 'defaults',
+        ]);
+
+        $menuBar = static::$container
+            ->get(MenuRuntime::class)
+            ->renderMenuBar($links, $menuAttributes)
+        ;
+
+        static::assertSame($expected, $menuBar, $description);
+    }
+
+    /**
+     * @param string     $description    Description of test
+     * @param string     $expected       Expected rendered menu bar
+     * @param array      $links          An array of arrays (0-based indexes): [0] name of link, [1] url of link, [2]
+     *                                   (optional) attributes of link, [3] (optional) attributes of item
+     * @param null|array $menuAttributes (optional) Attributes of the main container. It's an array of key-value pairs,
+     *                                   where key - attribute, value - value of attribute
+     *
+     * @dataProvider provideDataToRenderMenuBarUsingTestEnvironment
+     */
+    public function testRenderMenuBarUsingTestEnvironment(
         string $description,
         string $expected,
         array $links,
@@ -71,7 +99,7 @@ class MenuRuntimeTest extends KernelTestCase
         static::assertSame($expected, $menuBar, $description);
     }
 
-    public function provideLinksNamesUrlsToRenderMenuBar(): ?Generator
+    public function provideDataToRenderMenuBarUsingDefaults(): ?Generator
     {
         yield[
             'An empty array',
@@ -206,6 +234,182 @@ class MenuRuntimeTest extends KernelTestCase
         yield[
             'With attributes of links, items and menu',
             '<div id="main" class="my-menu"><div data-show="test" class="my-big-class"><a href="/test" id="main">Test 1</a></div><div><a href="/test/2" id="email" class="blue">Test 2</a></div><div id="test-test" data-show="true" class="my-last-class"><a href="/test/46/test" data-show="test" class="my-big-class">Test 3</a></div></div>',
+            [
+                [
+                    'Test 1',
+                    '/test',
+                    [
+                        'id' => 'main',
+                    ],
+                    [
+                        'data-show'                     => 'test',
+                        Attributes::ATTRIBUTE_CSS_CLASS => 'my-big-class',
+                    ],
+                ],
+                [
+                    'Test 2',
+                    '/test/2',
+                    [
+                        'id'                            => 'email',
+                        Attributes::ATTRIBUTE_CSS_CLASS => 'blue',
+                    ],
+                ],
+                [
+                    'Test 3',
+                    '/test/46/test',
+                    [
+                        'data-show'                     => 'test',
+                        Attributes::ATTRIBUTE_CSS_CLASS => 'my-big-class',
+                    ],
+                    [
+                        'id'                            => 'test-test',
+                        'data-show'                     => 'true',
+                        Attributes::ATTRIBUTE_CSS_CLASS => 'my-last-class',
+                    ],
+                ],
+            ],
+            [
+                'id'                            => 'main',
+                Attributes::ATTRIBUTE_CSS_CLASS => 'my-menu',
+            ],
+        ];
+    }
+
+    public function provideDataToRenderMenuBarUsingTestEnvironment(): ?Generator
+    {
+        yield[
+            'An empty array',
+            '',
+            [],
+        ];
+
+        yield[
+            '1 item only with empty strings',
+            '',
+            [
+                [
+                    '',
+                    '',
+                ],
+            ],
+        ];
+
+        yield[
+            '1 item only with not empty name and empty url',
+            '<div data-env="test"><div data-env="test"><a href="" data-env="test">Test</a></div></div>',
+            [
+                [
+                    'Test',
+                    '',
+                ],
+            ],
+        ];
+
+        yield[
+            'More than 1 item',
+            '<div data-env="test"><div data-env="test"><a href="/test" data-env="test">Test 1</a></div><div data-env="test"><a href="/test/2" data-env="test">Test 2</a></div><div data-env="test"><a href="/test/46/test" data-env="test">Test 3</a></div></div>',
+            [
+                [
+                    'Test 1',
+                    '/test',
+                ],
+                [
+                    'Test 2',
+                    '/test/2',
+                ],
+                [
+                    'Test 3',
+                    '/test/46/test',
+                ],
+            ],
+        ];
+
+        yield[
+            'With attributes of links',
+            '<div data-env="test"><div data-env="test"><a href="/test" id="main" data-env="test">Test 1</a></div><div data-env="test"><a href="/test/2" id="email" class="blue" data-env="test">Test 2</a></div><div data-env="test"><a href="/test/46/test" data-show="test" class="my-big-class" data-env="test">Test 3</a></div></div>',
+            [
+                [
+                    'Test 1',
+                    '/test',
+                    [
+                        'id' => 'main',
+                    ],
+                ],
+                [
+                    'Test 2',
+                    '/test/2',
+                    [
+                        'id'                            => 'email',
+                        Attributes::ATTRIBUTE_CSS_CLASS => 'blue',
+                    ],
+                ],
+                [
+                    'Test 3',
+                    '/test/46/test',
+                    [
+                        'data-show'                     => 'test',
+                        Attributes::ATTRIBUTE_CSS_CLASS => 'my-big-class',
+                    ],
+                ],
+            ],
+        ];
+
+        yield[
+            'With attributes of items',
+            '<div data-env="test"><div data-show="test" class="my-big-class" data-env="test"><a href="/test" data-env="test">Test 1</a></div><div data-env="test"><a href="/test/2" data-env="test">Test 2</a></div><div id="test-test" data-show="true" class="my-last-class" data-env="test"><a href="/test/46/test" data-env="test">Test 3</a></div></div>',
+            [
+                [
+                    'Test 1',
+                    '/test',
+                    null,
+                    [
+                        'data-show'                     => 'test',
+                        Attributes::ATTRIBUTE_CSS_CLASS => 'my-big-class',
+                    ],
+                ],
+                [
+                    'Test 2',
+                    '/test/2',
+                ],
+                [
+                    'Test 3',
+                    '/test/46/test',
+                    null,
+                    [
+                        'id'                            => 'test-test',
+                        'data-show'                     => 'true',
+                        Attributes::ATTRIBUTE_CSS_CLASS => 'my-last-class',
+                    ],
+                ],
+            ],
+        ];
+
+        yield[
+            'With attributes of menu',
+            '<div id="main" class="my-menu" data-env="test"><div data-env="test"><a href="/test" data-env="test">Test 1</a></div><div data-env="test"><a href="/test/2" data-env="test">Test 2</a></div><div data-env="test"><a href="/test/46/test" data-env="test">Test 3</a></div></div>',
+            [
+                [
+                    'Test 1',
+                    '/test',
+                ],
+                [
+                    'Test 2',
+                    '/test/2',
+                ],
+                [
+                    'Test 3',
+                    '/test/46/test',
+                ],
+            ],
+            [
+                'id'                            => 'main',
+                Attributes::ATTRIBUTE_CSS_CLASS => 'my-menu',
+            ],
+        ];
+
+        yield[
+            'With attributes of links, items and menu',
+            '<div id="main" class="my-menu" data-env="test"><div data-show="test" class="my-big-class" data-env="test"><a href="/test" id="main" data-env="test">Test 1</a></div><div data-env="test"><a href="/test/2" id="email" class="blue" data-env="test">Test 2</a></div><div id="test-test" data-show="true" class="my-last-class" data-env="test"><a href="/test/46/test" data-show="test" class="my-big-class" data-env="test">Test 3</a></div></div>',
             [
                 [
                     'Test 1',

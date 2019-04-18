@@ -1,0 +1,5 @@
+meritoo_menu:
+    templates:
+        link: '<a href="%%url%%"%%attributes%% data-env="test">%%name%%</a>'
+        item: '<div%%attributes%% data-env="test">%%link%%</div>'
+        menu: '<div%%attributes%% data-env="test">%%items%%</div>'
