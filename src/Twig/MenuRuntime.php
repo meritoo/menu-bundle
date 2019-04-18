@@ -11,9 +11,9 @@ declare(strict_types=1);
 namespace Meritoo\MenuBundle\Twig;
 
 use Meritoo\Common\Collection\Templates;
-use Meritoo\MenuBundle\Domain\Item;
-use Meritoo\MenuBundle\Domain\Link;
-use Meritoo\MenuBundle\Domain\Menu;
+use Meritoo\Menu\Item;
+use Meritoo\Menu\Link;
+use Meritoo\Menu\Menu;
 use Twig\Extension\RuntimeExtensionInterface;
 
 /**

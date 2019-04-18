@@ -11,7 +11,8 @@
     ],
     "require": {
         "php": "^7.2",
-        "meritoo/common-bundle": "^0.1.22"
+        "meritoo/common-bundle": "^0.1.22",
+        "meritoo/menu": "^0.0.1"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.14",

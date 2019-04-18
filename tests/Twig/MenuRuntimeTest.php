@@ -12,7 +12,7 @@ namespace Meritoo\Test\MenuBundle\Twig;
 
 use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
 use Meritoo\Common\Type\OopVisibilityType;
-use Meritoo\MenuBundle\Domain\Html\Attributes;
+use Meritoo\Menu\Html\Attributes;
 use Meritoo\MenuBundle\Twig\MenuRuntime;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Twig\Extension\RuntimeExtensionInterface;
