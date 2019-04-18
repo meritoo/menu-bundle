@@ -1,0 +1,23 @@
+language: php
+
+php:
+  - 7.2
+  - 7.3
+
+before_install:
+  - sudo locale-gen de_DE.UTF-8 es_ES.UTF-8 en_GB.UTF-8 en_US.UTF-8 fr_FR.UTF-8 it_IT.UTF-8 pl_PL.UTF-8 ru_RU.UTF-8
+  - composer global require hirak/prestissimo
+  - pear channel-discover pear.phing.info
+
+install:
+  - pear install phing/phing
+  - phpenv rehash
+
+before_script:
+  - phpenv config-add .travis-php-config.ini
+
+script:
+  - phing
+
+after_success:
+  - travis_retry php vendor/bin/php-coveralls -v
