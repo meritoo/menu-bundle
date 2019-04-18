@@ -24,7 +24,7 @@ class MenuExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions(): array
+    public function getFunctions()
     {
         return array_merge(parent::getFunctions(), [
             new TwigFunction(
