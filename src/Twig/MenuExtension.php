@@ -28,10 +28,10 @@ class MenuExtension extends AbstractExtension
     {
         return array_merge(parent::getFunctions(), [
             new TwigFunction(
-                'meritoo_menu_bar',
+                'meritoo_menu',
                 [
                     MenuRuntime::class,
-                    'renderMenuBar',
+                    'renderMenu',
                 ],
                 [
                     'is_safe' => ['html'],

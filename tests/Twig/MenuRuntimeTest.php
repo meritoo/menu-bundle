@@ -49,15 +49,15 @@ class MenuRuntimeTest extends KernelTestCase
 
     /**
      * @param string     $description    Description of test
-     * @param string     $expected       Expected rendered menu bar
+     * @param string     $expected       Expected rendered menu
      * @param array      $links          An array of arrays (0-based indexes): [0] name of link, [1] url of link, [2]
      *                                   (optional) attributes of link, [3] (optional) attributes of item
      * @param null|array $menuAttributes (optional) Attributes of the main container. It's an array of key-value pairs,
      *                                   where key - attribute, value - value of attribute
      *
-     * @dataProvider provideDataToRenderMenuBarUsingDefaults
+     * @dataProvider provideDataToTenderMenuUsingDefaults
      */
-    public function testRenderMenuBarUsingDefaults(
+    public function testRenderMenuUsingDefaults(
         string $description,
         string $expected,
         array $links,
@@ -67,39 +67,39 @@ class MenuRuntimeTest extends KernelTestCase
             'environment' => 'defaults',
         ]);
 
-        $menuBar = static::$container
+        $menu = static::$container
             ->get(MenuRuntime::class)
-            ->renderMenuBar($links, $menuAttributes)
+            ->renderMenu($links, $menuAttributes)
         ;
 
-        static::assertSame($expected, $menuBar, $description);
+        static::assertSame($expected, $menu, $description);
     }
 
     /**
      * @param string     $description    Description of test
-     * @param string     $expected       Expected rendered menu bar
+     * @param string     $expected       Expected rendered menu
      * @param array      $links          An array of arrays (0-based indexes): [0] name of link, [1] url of link, [2]
      *                                   (optional) attributes of link, [3] (optional) attributes of item
      * @param null|array $menuAttributes (optional) Attributes of the main container. It's an array of key-value pairs,
      *                                   where key - attribute, value - value of attribute
      *
-     * @dataProvider provideDataToRenderMenuBarUsingTestEnvironment
+     * @dataProvider provideDataToTenderMenuUsingTestEnvironment
      */
-    public function testRenderMenuBarUsingTestEnvironment(
+    public function testRenderMenuUsingTestEnvironment(
         string $description,
         string $expected,
         array $links,
         ?array $menuAttributes = null
     ): void {
-        $menuBar = static::$container
+        $menu = static::$container
             ->get(MenuRuntime::class)
-            ->renderMenuBar($links, $menuAttributes)
+            ->renderMenu($links, $menuAttributes)
         ;
 
-        static::assertSame($expected, $menuBar, $description);
+        static::assertSame($expected, $menu, $description);
     }
 
-    public function provideDataToRenderMenuBarUsingDefaults(): ?Generator
+    public function provideDataToTenderMenuUsingDefaults(): ?Generator
     {
         yield[
             'An empty array',
@@ -275,7 +275,7 @@ class MenuRuntimeTest extends KernelTestCase
         ];
     }
 
-    public function provideDataToRenderMenuBarUsingTestEnvironment(): ?Generator
+    public function provideDataToTenderMenuUsingTestEnvironment(): ?Generator
     {
         yield[
             'An empty array',

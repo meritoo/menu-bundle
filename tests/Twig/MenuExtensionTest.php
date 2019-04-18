@@ -40,9 +40,9 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
      * @param string $sourceCode Source code of the rendered template
      * @param string $expected   Expected result of rendering
      *
-     * @dataProvider provideTemplateToRenderMenuBarUsingTestEnvironment
+     * @dataProvider provideTemplateToTenderMenuUsingTestEnvironment
      */
-    public function testRenderMenuBarUsingTestEnvironment(string $name, string $sourceCode, string $expected): void
+    public function testRenderMenuUsingTestEnvironment(string $name, string $sourceCode, string $expected): void
     {
         $this->verifyRenderedTemplate($name, $sourceCode, $expected);
     }
@@ -52,9 +52,9 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
      * @param string $sourceCode Source code of the rendered template
      * @param string $expected   Expected result of rendering
      *
-     * @dataProvider provideTemplateToRenderMenuBarUsingDefaults
+     * @dataProvider provideTemplateToTenderMenuUsingDefaults
      */
-    public function testRenderMenuBarUsingDefaults(string $name, string $sourceCode, string $expected): void
+    public function testRenderMenuUsingDefaults(string $name, string $sourceCode, string $expected): void
     {
         static::bootKernel([
             'environment' => 'defaults',
@@ -63,18 +63,18 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         $this->verifyRenderedTemplate($name, $sourceCode, $expected);
     }
 
-    public function provideTemplateToRenderMenuBarUsingDefaults(): ?Generator
+    public function provideTemplateToTenderMenuUsingDefaults(): ?Generator
     {
         yield[
             'without-items',
-            '{{ meritoo_menu_bar({}) }}',
+            '{{ meritoo_menu({}) }}',
             '',
         ];
 
         yield[
             '1-item-only-with-empty-strings',
             '{{
-                meritoo_menu_bar([
+                meritoo_menu([
                     [
                         \'\',
                         \'\'
@@ -87,7 +87,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         yield[
             '1-item-only-with-not-empty-name-and-empty-url',
             '{{
-                meritoo_menu_bar([
+                meritoo_menu([
                     [
                         \'Test1\',
                         \'\'
@@ -100,7 +100,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         yield[
             'more-than-1-item',
             '{{
-                meritoo_menu_bar([
+                meritoo_menu([
                     [
                         \'Test 1\',
                         \'/test\'
@@ -121,7 +121,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         yield[
             'with-attributes-of-links',
             '{{
-                meritoo_menu_bar([
+                meritoo_menu([
                     [
                         \'Test 1\',
                         \'/test\',
@@ -153,7 +153,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         yield[
             'with-attributes-of-items',
             '{{
-                meritoo_menu_bar([
+                meritoo_menu([
                     [
                         \'Test 1\',
                         \'/test\',
@@ -185,7 +185,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         yield[
             'with-attributes-of-menu',
             '{{
-                meritoo_menu_bar(
+                meritoo_menu(
                     [
                         [
                             \'Test 1\',
@@ -212,7 +212,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         yield[
             'with-attributes-of-links-items-and-menu',
             '{{
-                meritoo_menu_bar(
+                meritoo_menu(
                     [
                         [
                             \'Test 1\',
@@ -257,18 +257,18 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         ];
     }
 
-    public function provideTemplateToRenderMenuBarUsingTestEnvironment(): ?Generator
+    public function provideTemplateToTenderMenuUsingTestEnvironment(): ?Generator
     {
         yield[
             'without-items',
-            '{{ meritoo_menu_bar({}) }}',
+            '{{ meritoo_menu({}) }}',
             '',
         ];
 
         yield[
             '1-item-only-with-empty-strings',
             '{{
-                meritoo_menu_bar([
+                meritoo_menu([
                     [
                         \'\',
                         \'\'
@@ -281,7 +281,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         yield[
             '1-item-only-with-not-empty-name-and-empty-url',
             '{{
-                meritoo_menu_bar([
+                meritoo_menu([
                     [
                         \'Test1\',
                         \'\'
@@ -294,7 +294,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         yield[
             'more-than-1-item',
             '{{
-                meritoo_menu_bar([
+                meritoo_menu([
                     [
                         \'Test 1\',
                         \'/test\'
@@ -315,7 +315,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         yield[
             'with-attributes-of-links',
             '{{
-                meritoo_menu_bar([
+                meritoo_menu([
                     [
                         \'Test 1\',
                         \'/test\',
@@ -347,7 +347,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         yield[
             'with-attributes-of-items',
             '{{
-                meritoo_menu_bar([
+                meritoo_menu([
                     [
                         \'Test 1\',
                         \'/test\',
@@ -379,7 +379,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         yield[
             'with-attributes-of-menu',
             '{{
-                meritoo_menu_bar(
+                meritoo_menu(
                     [
                         [
                             \'Test 1\',
@@ -406,7 +406,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         yield[
             'with-attributes-of-links-items-and-menu',
             '{{
-                meritoo_menu_bar(
+                meritoo_menu(
                     [
                         [
                             \'Test 1\',

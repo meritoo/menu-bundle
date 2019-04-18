@@ -61,7 +61,7 @@ class MenuRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * Renders menu bar with given items
+     * Renders menu with given items
      *
      * @param array      $links          An array of arrays (0-based indexes): [0] name of link, [1] url of link, [2]
      *                                   (optional) attributes of link, [3] (optional) attributes of item
@@ -69,7 +69,7 @@ class MenuRuntime implements RuntimeExtensionInterface
      *                                   where key - attribute, value - value of attribute
      * @return string
      */
-    public function renderMenuBar(array $links, ?array $menuAttributes = null): string
+    public function renderMenu(array $links, ?array $menuAttributes = null): string
     {
         $menu = Menu::create($links, $menuAttributes);
 
