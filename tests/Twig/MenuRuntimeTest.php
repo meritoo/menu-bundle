@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Meritoo\Test\MenuBundle\Twig;
 
+use Generator;
 use Meritoo\Common\Traits\Test\Base\BaseTestCaseTrait;
 use Meritoo\Common\Type\OopVisibilityType;
 use Meritoo\Menu\Html\Attributes;
@@ -70,7 +71,7 @@ class MenuRuntimeTest extends KernelTestCase
         static::assertSame($expected, $menuBar, $description);
     }
 
-    public function provideLinksNamesUrlsToRenderMenuBar(): ?\Generator
+    public function provideLinksNamesUrlsToRenderMenuBar(): ?Generator
     {
         yield[
             'An empty array',

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Meritoo\Test\MenuBundle\Twig;
 
+use Generator;
 use Meritoo\CommonBundle\Test\Twig\Base\BaseTwigExtensionTestCase;
 use Meritoo\MenuBundle\Twig\MenuExtension;
 
@@ -62,7 +63,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         $this->verifyRenderedTemplate($name, $sourceCode, $expected);
     }
 
-    public function provideTemplateToRenderMenuBarUsingDefaults(): ?\Generator
+    public function provideTemplateToRenderMenuBarUsingDefaults(): ?Generator
     {
         yield[
             'without-items',
