@@ -16,12 +16,17 @@ composer require meritoo/menu-bundle
 
 # Configuration
 
-Comming soon...
+All parameters have default values. After installation of this bundle, you have to do nothing. If you want to tweak
+some of parameters, create proper configuration file and enter desired parameters.
+
+[Read more](docs/Configuration.md)
 
 # Usage
 
-Comming soon...
+1. [Configuration](docs/Configuration.md)
+2. Twig extensions:
+    - [MenuExtension](docs/Twig-Extensions/MenuExtension.md)
 
 # Development
 
-Comming soon...
+More information [you can find here](docs/Development.md)
