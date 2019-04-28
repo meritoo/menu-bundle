@@ -115,7 +115,17 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
                     ]
                 ])
             }}',
-            '<div><div><a href="/test">Test 1</a></div><div><a href="/test/2">Test 2</a></div><div><a href="/test/46/test">Test 3</a></div></div>',
+            '<div>'
+            . '<div>'
+            . '' . '<a href="/test">Test 1</a>'
+            . '</div>'
+            . '<div>'
+            . '' . '<a href="/test/2">Test 2</a>'
+            . '</div>'
+            . '<div>'
+            . '' . '<a href="/test/46/test">Test 3</a>'
+            . '</div>'
+            . '</div>',
         ];
 
         yield[
@@ -147,7 +157,17 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
                     ]
                 ])
             }}',
-            '<div><div><a href="/test" id="main">Test 1</a></div><div><a href="/test/2" id="email" class="blue">Test 2</a></div><div><a href="/test/46/test" data-show="test" class="my-big-class">Test 3</a></div></div>',
+            '<div>'
+            . '<div>'
+            . '' . '<a href="/test" id="main">Test 1</a>'
+            . '</div>'
+            . '<div>'
+            . '' . '<a href="/test/2" id="email" class="blue">Test 2</a>'
+            . '</div>'
+            . '<div>'
+            . '' . '<a href="/test/46/test" data-show="test" class="my-big-class">Test 3</a>'
+            . '</div>'
+            . '</div>',
         ];
 
         yield[
@@ -179,7 +199,17 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
                     ]
                 ])
             }}',
-            '<div><div data-show="test" class="my-big-class"><a href="/test">Test 1</a></div><div><a href="/test/2">Test 2</a></div><div id="test-test" data-show="true" class="my-last-class"><a href="/test/46/test">Test 3</a></div></div>',
+            '<div>'
+            . '<div data-show="test" class="my-big-class">'
+            . '' . '<a href="/test">Test 1</a>'
+            . '</div>'
+            . '<div>'
+            . '' . '<a href="/test/2">Test 2</a>'
+            . '</div>'
+            . '<div id="test-test" data-show="true" class="my-last-class">'
+            . '' . '<a href="/test/46/test">Test 3</a>'
+            . '</div>'
+            . '</div>',
         ];
 
         yield[
@@ -206,7 +236,17 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
                     }
                 )
             }}',
-            '<div id="main" class="my-menu"><div><a href="/test">Test 1</a></div><div><a href="/test/2">Test 2</a></div><div><a href="/test/46/test">Test 3</a></div></div>',
+            '<div id="main" class="my-menu">'
+            . '<div>'
+            . '' . '<a href="/test">Test 1</a>'
+            . '</div>'
+            . '<div>'
+            . '' . '<a href="/test/2">Test 2</a>'
+            . '</div>'
+            . '<div>'
+            . '' . '<a href="/test/46/test">Test 3</a>'
+            . '</div>'
+            . '</div>',
         ];
 
         yield[
@@ -253,7 +293,17 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
                     }
                 )
             }}',
-            '<div id="main" class="my-menu"><div data-show="test" class="my-big-class"><a href="/test" id="main">Test 1</a></div><div><a href="/test/2" id="email" class="blue">Test 2</a></div><div id="test-test" data-show="true" class="my-last-class"><a href="/test/46/test" data-show="test" class="my-big-class">Test 3</a></div></div>',
+            '<div id="main" class="my-menu">'
+            . '<div data-show="test" class="my-big-class">'
+            . '' . '<a href="/test" id="main">Test 1</a>'
+            . '</div>'
+            . '<div>'
+            . '' . '<a href="/test/2" id="email" class="blue">Test 2</a>'
+            . '</div>'
+            . '<div id="test-test" data-show="true" class="my-last-class">'
+            . '' . '<a href="/test/46/test" data-show="test" class="my-big-class">Test 3</a>'
+            . '</div>'
+            . '</div>',
         ];
     }
 
@@ -288,7 +338,11 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
                     ]
                 ])
             }}',
-            '<div data-env="test"><div data-env="test"><a href="" data-env="test">Test1</a></div></div>',
+            '<div data-env="test">'
+            . '<div data-env="test">'
+            . '' . '<a href="" data-env="test">Test1</a>'
+            . '</div>'
+            . '</div>',
         ];
 
         yield[
@@ -309,7 +363,17 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
                     ]
                 ])
             }}',
-            '<div data-env="test"><div data-env="test"><a href="/test" data-env="test">Test 1</a></div><div data-env="test"><a href="/test/2" data-env="test">Test 2</a></div><div data-env="test"><a href="/test/46/test" data-env="test">Test 3</a></div></div>',
+            '<div data-env="test">'
+            . '<div data-env="test">'
+            . '' . '<a href="/test" data-env="test">Test 1</a>'
+            . '</div>'
+            . '<div data-env="test">'
+            . '' . '<a href="/test/2" data-env="test">Test 2</a>'
+            . '</div>'
+            . '<div data-env="test">'
+            . '' . '<a href="/test/46/test" data-env="test">Test 3</a>'
+            . '</div>'
+            . '</div>',
         ];
 
         yield[
@@ -341,7 +405,17 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
                     ]
                 ])
             }}',
-            '<div data-env="test"><div data-env="test"><a href="/test" id="main" data-env="test">Test 1</a></div><div data-env="test"><a href="/test/2" id="email" class="blue" data-env="test">Test 2</a></div><div data-env="test"><a href="/test/46/test" data-show="test" class="my-big-class" data-env="test">Test 3</a></div></div>',
+            '<div data-env="test">'
+            . '<div data-env="test">'
+            . '' . '<a href="/test" id="main" data-env="test">Test 1</a>'
+            . '</div>'
+            . '<div data-env="test">'
+            . '' . '<a href="/test/2" id="email" class="blue" data-env="test">Test 2</a>'
+            . '</div>'
+            . '<div data-env="test">'
+            . '' . '<a href="/test/46/test" data-show="test" class="my-big-class" data-env="test">Test 3</a>'
+            . '</div>'
+            . '</div>',
         ];
 
         yield[
@@ -373,7 +447,17 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
                     ]
                 ])
             }}',
-            '<div data-env="test"><div data-show="test" class="my-big-class" data-env="test"><a href="/test" data-env="test">Test 1</a></div><div data-env="test"><a href="/test/2" data-env="test">Test 2</a></div><div id="test-test" data-show="true" class="my-last-class" data-env="test"><a href="/test/46/test" data-env="test">Test 3</a></div></div>',
+            '<div data-env="test">'
+            . '<div data-show="test" class="my-big-class" data-env="test">'
+            . '' . '<a href="/test" data-env="test">Test 1</a>'
+            . '</div>'
+            . '<div data-env="test">'
+            . '' . '<a href="/test/2" data-env="test">Test 2</a>'
+            . '</div>'
+            . '<div id="test-test" data-show="true" class="my-last-class" data-env="test">'
+            . '' . '<a href="/test/46/test" data-env="test">Test 3</a>'
+            . '</div>'
+            . '</div>',
         ];
 
         yield[
@@ -400,7 +484,17 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
                     }
                 )
             }}',
-            '<div id="main" class="my-menu" data-env="test"><div data-env="test"><a href="/test" data-env="test">Test 1</a></div><div data-env="test"><a href="/test/2" data-env="test">Test 2</a></div><div data-env="test"><a href="/test/46/test" data-env="test">Test 3</a></div></div>',
+            '<div id="main" class="my-menu" data-env="test">'
+            . '<div data-env="test">'
+            . '' . '<a href="/test" data-env="test">Test 1</a>'
+            . '</div>'
+            . '<div data-env="test">'
+            . '' . '<a href="/test/2" data-env="test">Test 2</a>'
+            . '</div>'
+            . '<div data-env="test">'
+            . '' . '<a href="/test/46/test" data-env="test">Test 3</a>'
+            . '</div>'
+            . '</div>',
         ];
 
         yield[
@@ -447,14 +541,25 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
                     }
                 )
             }}',
-            '<div id="main" class="my-menu" data-env="test"><div data-show="test" class="my-big-class" data-env="test"><a href="/test" id="main" data-env="test">Test 1</a></div><div data-env="test"><a href="/test/2" id="email" class="blue" data-env="test">Test 2</a></div><div id="test-test" data-show="true" class="my-last-class" data-env="test"><a href="/test/46/test" data-show="test" class="my-big-class" data-env="test">Test 3</a></div></div>',
+            '<div id="main" class="my-menu" data-env="test">'
+            . '<div data-show="test" class="my-big-class" data-env="test">'
+            . '' . '<a href="/test" id="main" data-env="test">Test 1</a>'
+            . '</div>'
+            . '<div data-env="test">'
+            . '' . '<a href="/test/2" id="email" class="blue" data-env="test">Test 2</a>'
+            . '</div>'
+            . '<div id="test-test" data-show="true" class="my-last-class" data-env="test">'
+            . '' . '<a href="/test/46/test" data-show="test" class="my-big-class" data-env="test">Test 3</a>'
+            . '</div>'
+            . '</div>',
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getExtensionNamespace(): string
+    protected
+    function getExtensionNamespace(): string
     {
         return MenuExtension::class;
     }
