@@ -11,9 +11,11 @@ declare(strict_types=1);
 namespace Meritoo\MenuBundle\Twig;
 
 use Meritoo\Common\Collection\Templates;
-use Meritoo\Menu\Item;
 use Meritoo\Menu\Link;
+use Meritoo\Menu\LinkContainer;
 use Meritoo\Menu\Menu;
+use Meritoo\Menu\Visitor\Visitor;
+use Meritoo\MenuBundle\Visitor\Factory\DefaultVisitorFactory;
 use Twig\Extension\RuntimeExtensionInterface;
 
 /**
@@ -26,21 +28,21 @@ use Twig\Extension\RuntimeExtensionInterface;
 class MenuRuntime implements RuntimeExtensionInterface
 {
     /**
-     * Template for a link in menu
+     * Template of link in menu
      *
      * @var string
      */
     private $linkTemplate;
 
     /**
-     * Template for an item in menu (container for a link)
+     * Template of container for a link
      *
      * @var string
      */
-    private $itemTemplate;
+    private $linkContainerTemplate;
 
     /**
-     * Template for the whole menu (container for items)
+     * Template of the whole menu (has containers with links)
      *
      * @var string
      */
@@ -49,22 +51,22 @@ class MenuRuntime implements RuntimeExtensionInterface
     /**
      * Class constructor
      *
-     * @param string $linkTemplate Template for a link in menu
-     * @param string $itemTemplate Template for an item in menu (container for a link)
-     * @param string $menuTemplate Template for the whole menu (container for items)
+     * @param string $linkTemplate          Template of link in menu
+     * @param string $linkContainerTemplate Template of container for a link
+     * @param string $menuTemplate          Template of the whole menu (has containers with links)
      */
-    public function __construct(string $linkTemplate, string $itemTemplate, string $menuTemplate)
+    public function __construct(string $linkTemplate, string $linkContainerTemplate, string $menuTemplate)
     {
         $this->linkTemplate = $linkTemplate;
-        $this->itemTemplate = $itemTemplate;
+        $this->linkContainerTemplate = $linkContainerTemplate;
         $this->menuTemplate = $menuTemplate;
     }
 
     /**
-     * Renders menu with given items
+     * Renders menu with given links
      *
      * @param array      $links          An array of arrays (0-based indexes): [0] name of link, [1] url of link, [2]
-     *                                   (optional) attributes of link, [3] (optional) attributes of item
+     *                                   (optional) attributes of link, [3] (optional) attributes of link's container
      * @param null|array $menuAttributes (optional) Attributes of the main container. It's an array of key-value pairs,
      *                                   where key - attribute, value - value of attribute
      * @return string
@@ -88,9 +90,9 @@ class MenuRuntime implements RuntimeExtensionInterface
     private function prepareTemplates(): Templates
     {
         return Templates::fromArray([
-            Link::class => $this->linkTemplate,
-            Item::class => $this->itemTemplate,
-            Menu::class => $this->menuTemplate,
+            Link::class          => $this->linkTemplate,
+            LinkContainer::class => $this->linkContainerTemplate,
+            Menu::class          => $this->menuTemplate,
         ]);
     }
 }

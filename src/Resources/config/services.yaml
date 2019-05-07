@@ -18,6 +18,6 @@ services:
     #
     Meritoo\MenuBundle\Twig\MenuRuntime:
         arguments:
-            $linkTemplate: '%meritoo_menu.templates.link%'
-            $itemTemplate: '%meritoo_menu.templates.item%'
-            $menuTemplate: '%meritoo_menu.templates.menu%'
+            - '%meritoo_menu.templates.link%'
+            - '%meritoo_menu.templates.link_container%'
+            - '%meritoo_menu.templates.menu%'

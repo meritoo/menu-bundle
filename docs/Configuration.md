@@ -10,29 +10,29 @@ Common & useful classes, resources, extensions. Based on Symfony framework.
 meritoo_menu:
     templates:
         link: <a href="%%url%%"%%attributes%%>%%name%%</a>
-        item: <div%%attributes%%>%%link%%</div>
-        menu: <div%%attributes%%>%%items%%</div>
+        link_container: <div%%attributes%%>%%link%%</div>
+        menu: <div%%attributes%%>%%linksContainers%%</div>
 ```
 
 ### Available parameters
 
 * meritoo_menu.templates.link
 
-    > Template for a link in menu
+    > Template of link in menu
 
     Default value: `<a href="%%url%%"%%attributes%%>%%name%%</a>`.
 
-* meritoo_menu.templates.item
+* meritoo_menu.templates.link_container
 
-    > Template for an item in menu (container for a link)
+    > Template of container for a link
     
     Default value: `<div%%attributes%%>%%link%%</div>`
 
 * meritoo_menu.templates.menu
 
-    > Template for the whole menu (container for items)
+    > Template of the whole menu (has containers with links)
     
-    Default value: `<div%%attributes%%>%%items%%</div>`
+    Default value: `<div%%attributes%%>%%linksContainers%%</div>`
 
 # More
 

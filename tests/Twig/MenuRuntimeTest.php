@@ -51,7 +51,7 @@ class MenuRuntimeTest extends KernelTestCase
      * @param string     $description    Description of test
      * @param string     $expected       Expected rendered menu
      * @param array      $links          An array of arrays (0-based indexes): [0] name of link, [1] url of link, [2]
-     *                                   (optional) attributes of link, [3] (optional) attributes of item
+     *                                   (optional) attributes of link, [3] (optional) attributes of link's container
      * @param null|array $menuAttributes (optional) Attributes of the main container. It's an array of key-value pairs,
      *                                   where key - attribute, value - value of attribute
      *
@@ -79,7 +79,7 @@ class MenuRuntimeTest extends KernelTestCase
      * @param string     $description    Description of test
      * @param string     $expected       Expected rendered menu
      * @param array      $links          An array of arrays (0-based indexes): [0] name of link, [1] url of link, [2]
-     *                                   (optional) attributes of link, [3] (optional) attributes of item
+     *                                   (optional) attributes of link, [3] (optional) attributes of link's container
      * @param null|array $menuAttributes (optional) Attributes of the main container. It's an array of key-value pairs,
      *                                   where key - attribute, value - value of attribute
      *
@@ -108,7 +108,7 @@ class MenuRuntimeTest extends KernelTestCase
         ];
 
         yield[
-            '1 item only with empty strings',
+            '1 link\'s container only with empty strings',
             '',
             [
                 [
@@ -119,7 +119,7 @@ class MenuRuntimeTest extends KernelTestCase
         ];
 
         yield[
-            '1 item only with not empty name and empty url',
+            '1 link\'s container only with not empty name and empty url',
             '<div>'
             . '<div>'
             . '' . '<a href="">Test</a>'
@@ -134,7 +134,7 @@ class MenuRuntimeTest extends KernelTestCase
         ];
 
         yield[
-            'More than 1 item',
+            'More than 1 link\'s container',
             '<div>'
             . '<div>'
             . '' . '<a href="/test">Test 1</a>'
@@ -203,7 +203,7 @@ class MenuRuntimeTest extends KernelTestCase
         ];
 
         yield[
-            'With attributes of items',
+            'With attributes of link\'s container',
             '<div>'
             . '<div data-show="test" class="my-big-class">'
             . '' . '<a href="/test">Test 1</a>'
@@ -276,7 +276,7 @@ class MenuRuntimeTest extends KernelTestCase
         ];
 
         yield[
-            'With attributes of links, items and menu',
+            'With attributes of all elements',
             '<div id="main" class="my-menu">'
             . '<div data-show="test" class="my-big-class">'
             . '' . '<a href="/test" id="main">Test 1</a>'
@@ -338,7 +338,7 @@ class MenuRuntimeTest extends KernelTestCase
         ];
 
         yield[
-            '1 item only with empty strings',
+            '1 link\'s container only with empty strings',
             '',
             [
                 [
@@ -349,7 +349,7 @@ class MenuRuntimeTest extends KernelTestCase
         ];
 
         yield[
-            '1 item only with not empty name and empty url',
+            '1 link\'s container only with not empty name and empty url',
             '<div data-env="test">'
             . '<div data-env="test">'
             . '' . '<a href="" data-env="test">Test</a>'
@@ -364,7 +364,7 @@ class MenuRuntimeTest extends KernelTestCase
         ];
 
         yield[
-            'More than 1 item',
+            'More than 1 link\'s container',
             '<div data-env="test">'
             . '<div data-env="test">'
             . '' . '<a href="/test" data-env="test">Test 1</a>'
@@ -433,7 +433,7 @@ class MenuRuntimeTest extends KernelTestCase
         ];
 
         yield[
-            'With attributes of items',
+            'With attributes of links\' containers',
             '<div data-env="test">'
             . '<div data-show="test" class="my-big-class" data-env="test">'
             . '' . '<a href="/test" data-env="test">Test 1</a>'
@@ -506,7 +506,7 @@ class MenuRuntimeTest extends KernelTestCase
         ];
 
         yield[
-            'With attributes of links, items and menu',
+            'With attributes of all elements',
             '<div id="main" class="my-menu" data-env="test">'
             . '<div data-show="test" class="my-big-class" data-env="test"><a href="/test" id="main" data-env="test">Test 1</a>'
             . '</div>'

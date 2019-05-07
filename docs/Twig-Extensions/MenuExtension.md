@@ -10,9 +10,9 @@ Located here: `Meritoo\MenuBundle\Twig\MenuExtension`. It's Twig extension relat
 
 ##### meritoo_menu()
 
-Renders menu with given items. Expects 2 arguments:
+Renders menu with given links. Expects 2 arguments:
 
-- `$links` - an array of arrays (0-based indexes): [0] name of link, [1] url of link, [2], (optional) attributes of link, [3] (optional) attributes of item
+- `$links` - an array of arrays (0-based indexes): [0] name of link, [1] url of link, [2], (optional) attributes of link, [3] (optional) attributes of link's container
 - `$menuAttributes` - (optional) attributes of the main container. It's an array of key-value pairs, where key - attribute, value - value of attribute
 
 ```twig

@@ -66,13 +66,13 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
     public function provideTemplateToTenderMenuUsingDefaults(): ?Generator
     {
         yield[
-            'without-items',
+            'without-links',
             '{{ meritoo_menu({}) }}',
             '',
         ];
 
         yield[
-            '1-item-only-with-empty-strings',
+            '1-link-only-with-empty-strings',
             '{{
                 meritoo_menu([
                     [
@@ -85,7 +85,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         ];
 
         yield[
-            '1-item-only-with-not-empty-name-and-empty-url',
+            '1-link-only-with-not-empty-name-and-empty-url',
             '{{
                 meritoo_menu([
                     [
@@ -98,7 +98,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         ];
 
         yield[
-            'more-than-1-item',
+            'more-than-1-link',
             '{{
                 meritoo_menu([
                     [
@@ -171,7 +171,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         ];
 
         yield[
-            'with-attributes-of-items',
+            'with-attributes-of-links-containers',
             '{{
                 meritoo_menu([
                     [
@@ -250,7 +250,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         ];
 
         yield[
-            'with-attributes-of-links-items-and-menu',
+            'with-attributes-of-all-elements',
             '{{
                 meritoo_menu(
                     [
@@ -310,13 +310,13 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
     public function provideTemplateToTenderMenuUsingTestEnvironment(): ?Generator
     {
         yield[
-            'without-items',
+            'without-links',
             '{{ meritoo_menu({}) }}',
             '',
         ];
 
         yield[
-            '1-item-only-with-empty-strings',
+            '1-link-only-with-empty-strings',
             '{{
                 meritoo_menu([
                     [
@@ -329,7 +329,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         ];
 
         yield[
-            '1-item-only-with-not-empty-name-and-empty-url',
+            '1-link-only-with-not-empty-name-and-empty-url',
             '{{
                 meritoo_menu([
                     [
@@ -346,7 +346,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         ];
 
         yield[
-            'more-than-1-item',
+            'more-than-1-link',
             '{{
                 meritoo_menu([
                     [
@@ -419,7 +419,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         ];
 
         yield[
-            'with-attributes-of-items',
+            'with-attributes-of-links-containers',
             '{{
                 meritoo_menu([
                     [
@@ -498,7 +498,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
         ];
 
         yield[
-            'with-attributes-of-links-items-and-menu',
+            'with-attributes-of-all-elements',
             '{{
                 meritoo_menu(
                     [
