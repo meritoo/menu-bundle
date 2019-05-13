@@ -10,3 +10,4 @@ services:
 
     test.meritoo_menu.twig.menu_runtime: '@Meritoo\MenuBundle\Twig\MenuRuntime'
     test.meritoo_menu.twig.menu_extension: '@Meritoo\MenuBundle\Twig\MenuExtension'
+    test.meritoo_menu.visitor_factory.collection: '@Meritoo\MenuBundle\Visitor\Factory\Collection'

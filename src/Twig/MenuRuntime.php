@@ -14,8 +14,7 @@ use Meritoo\Common\Collection\Templates;
 use Meritoo\Menu\Link;
 use Meritoo\Menu\LinkContainer;
 use Meritoo\Menu\Menu;
-use Meritoo\Menu\Visitor\Visitor;
-use Meritoo\MenuBundle\Visitor\Factory\DefaultVisitorFactory;
+use Meritoo\MenuBundle\Visitor\Factory\Service;
 use Twig\Extension\RuntimeExtensionInterface;
 
 /**
@@ -49,17 +48,30 @@ class MenuRuntime implements RuntimeExtensionInterface
     private $menuTemplate;
 
     /**
+     * Service for the VisitorFactory
+     *
+     * @var Service
+     */
+    private $factoryService;
+
+    /**
      * Class constructor
      *
-     * @param string $linkTemplate          Template of link in menu
-     * @param string $linkContainerTemplate Template of container for a link
-     * @param string $menuTemplate          Template of the whole menu (has containers with links)
+     * @param string  $linkTemplate          Template of link in menu
+     * @param string  $linkContainerTemplate Template of container for a link
+     * @param string  $menuTemplate          Template of the whole menu (has containers with links)
+     * @param Service $factoryService        Service for the VisitorFactory
      */
-    public function __construct(string $linkTemplate, string $linkContainerTemplate, string $menuTemplate)
-    {
+    public function __construct(
+        string $linkTemplate,
+        string $linkContainerTemplate,
+        string $menuTemplate,
+        Service $factoryService
+    ) {
         $this->linkTemplate = $linkTemplate;
         $this->linkContainerTemplate = $linkContainerTemplate;
         $this->menuTemplate = $menuTemplate;
+        $this->factoryService = $factoryService;
     }
 
     /**
@@ -78,6 +90,8 @@ class MenuRuntime implements RuntimeExtensionInterface
         if (null === $menu) {
             return '';
         }
+
+        $this->factoryService->visitMenuAndLinks($menu);
 
         return $menu->render($this->prepareTemplates());
     }

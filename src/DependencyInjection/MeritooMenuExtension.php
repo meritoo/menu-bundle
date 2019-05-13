@@ -26,6 +26,9 @@ class MeritooMenuExtension extends BaseExtension
      */
     protected function getBundleDirectoryPath(): string
     {
-        return Miscellaneous::concatenatePaths([__DIR__, '..']);
+        return Miscellaneous::concatenatePaths([
+            __DIR__,
+            '..',
+        ]);
     }
 }

@@ -21,3 +21,8 @@ services:
             - '%meritoo_menu.templates.link%'
             - '%meritoo_menu.templates.link_container%'
             - '%meritoo_menu.templates.menu%'
+
+    _instanceof:
+        Meritoo\MenuBundle\Visitor\Common\VisitorFactory:
+            tags:
+                - meritoo_menu.visitor_factory

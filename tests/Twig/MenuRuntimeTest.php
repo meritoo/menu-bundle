@@ -36,8 +36,8 @@ class MenuRuntimeTest extends KernelTestCase
         static::assertConstructorVisibilityAndArguments(
             MenuRuntime::class,
             OopVisibilityType::IS_PUBLIC,
-            3,
-            3
+            4,
+            4
         );
     }
 

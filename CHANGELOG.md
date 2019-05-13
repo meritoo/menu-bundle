@@ -6,6 +6,7 @@ Build navigation easily, without any efforts. Bundle based on Symfony framework.
 
 1. Tests > make HTML code more readable
 2. Implement latest version of `meritoo/menu` package (`0.0.2`). Replace `Item` with `LinkContainer` class.
+3. Common factory of visitors
 
 # 0.0.1
 
