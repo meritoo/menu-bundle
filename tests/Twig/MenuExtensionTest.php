@@ -558,8 +558,7 @@ class MenuExtensionTest extends BaseTwigExtensionTestCase
     /**
      * {@inheritdoc}
      */
-    protected
-    function getExtensionNamespace(): string
+    protected function getExtensionNamespace(): string
     {
         return MenuExtension::class;
     }

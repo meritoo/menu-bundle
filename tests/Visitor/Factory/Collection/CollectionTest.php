@@ -35,7 +35,7 @@ class CollectionTest extends KernelTestCase
 
     public function testDefaultElementsCount(): void
     {
-        /* @var Collection $collection */
+        /** @var Collection $collection */
         $collection = static::$container->get(Collection::class);
 
         static::assertEquals(1, $collection->count());
@@ -43,10 +43,10 @@ class CollectionTest extends KernelTestCase
 
     public function testAddVisitorFactory(): void
     {
-        /* @var Collection $collection */
+        /** @var Collection $collection */
         $collection = static::$container->get(Collection::class);
 
-        /* @var VisitorFactory $visitorFactory */
+        /** @var VisitorFactory $visitorFactory */
         $visitorFactory = static::$container->get(VisitorFactory::class);
 
         $collection->addVisitorFactory($visitorFactory);
